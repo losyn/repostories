@@ -1,4 +1,4 @@
-package com.losyn.chat.server;
+package com.losyn.chat;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;

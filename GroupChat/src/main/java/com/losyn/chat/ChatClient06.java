@@ -1,16 +1,15 @@
-package com.losyn.chat.server;
+package com.losyn.chat;
 
 import java.util.Scanner;
 
 /**
- * 客户端01
+ * 客户端06
  */
-public class ChatClient01 {
-    private static final String CONFIG_XML = "jgroups-chat-tcp.xml";
+public class ChatClient06 {
     public static void main(String[] args) {
-        SimpleChat chat01 = new SimpleChat(CONFIG_XML);
-        chat01.start();
-        scannerChat(chat01);
+        SimpleChat chat06 = new SimpleChat();
+        chat06.start();
+        scannerChat(chat06);
     }
 
     private static void scannerChat(SimpleChat chat01){

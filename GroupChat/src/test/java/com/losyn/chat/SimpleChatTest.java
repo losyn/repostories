@@ -1,4 +1,4 @@
-package com.losyn.chat.server;
+package com.losyn.chat;
 
 /**
  * TODO: 这里要写注释的!
