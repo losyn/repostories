@@ -37,3 +37,48 @@ JGroups 入门实践
         具体可参考百度百科(http://baike.baidu.com/view/1161229.htm?fr=aladdin)。
 
         JGroups当中，udp是比较推荐的通信方式，其特点是不需要知道另一个节点的ip，通过多播网络发现就可以“找到”相应的节点，而tcp则需要在配置文件中固定配置。
+
+    tcp模式下:
+        如果是同一台机器测试,请注意在
+            TCPPING 元素下修改 initial_hosts的配置端口:
+            例如:"${jgroups.tcpping.initial_hosts:192.168.1.100[7800],192.168.1.100[7801]}
+        如果是多台机器测试,请注意在
+            TCPPING 元素下修改 initial_hosts的ip,端口随意:
+            例如:"${jgroups.tcpping.initial_hosts:192.168.1.100[7800],192.168.1.112[7800]}
+
+    udp模式下:
+        同一台机器的不同端口(端口是动态的)可通信.
+        不同机器之间的ip多播可能会受到一些因素限制而造成节点之间无法彼此发现.
+
+基本概况
+    在JGroups中JChannel类提供了主要的API ，用于连接到集群（cluster）、发送和接收消息（Message）和注册listeners等。
+    Message包含消息头（保存地址等信息）和一个字节数组（保存希望传输的数据）。org.jgroups.Address接口及其实现类封装了地址信息，它通常包含IP地址和端口号。
+    连接到集群中的所有实例（instance）被称为一个视图（org.jgroups.View）。通过View.getMembers()可以得到所有实例的地址。
+    实例只有在连接到集群后才能够发送和接收消息。
+    以相同name调用JChannel.connect(String name)方法的所有实例会连接到同一个集群。
+    当实例希望离开集群时，可以调用JChannel.disconnect()方法。当希望释放占有的资源时，可以调用JChannel.close()方法。JChannel.close()方法内部会调用JChannel.disconnect()方法。
+
+    通过调用JChannel.setReceiver()方法可以接收消息和得到View改变的通知。每当有实例加入或者离开集群的时候，viewAccepted(View view)方法会被调用。
+    View.toString()方法会打印出View中所有实例的地址，以及View ID。
+    需要注意的是，每次viewAccepted(View view)方法被调用时，view参数都不同，其View ID也会增长。
+    如果没有名字，名字是机器名+随机数，后面跟|，以及自增长的View ID。
+    View内的第一个实例被称为coordinator。
+    Receiver接口上的getState()，setState()方法用于在实例间传递状态。
+    新的实例通过setState()方法获得通过状态，而这个状态是通过调用集群中其它某个实例上的getState()获得的。
+
+Chat例子
+    实现功能
+        我们来写一个聊天程序，只支持文本的。我们要实现如下功能
+        所有的SimpleChat实例可以相互找到并组成一个集群。
+        没必要创建一个中心的ChatServer，这样就不会有单点故障。
+        聊天消息将被发到集群中的所有实例。
+        当一个实例加入或退出（或崩溃）时，其他实例都将得到通知。
+        我们维护一个集群内的聊天记录state。新加入的实例可以查询聊天记录。
+
+jgroups的应用
+    上面例子程序我们已经可以看到，jgroups可以用来做state replication
+    以下项目场景都使用了jgroups
+        JBoss Application Server Clustering
+        OSCache Clustering
+        Jetty HTTP session replication
+        Tomcat HTTP session replication
