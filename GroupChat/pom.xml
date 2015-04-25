@@ -8,5 +8,22 @@
     <artifactId>jgroups-chat</artifactId>
     <version>1.0.0</version>
 
+    <properties>
+    </properties>
 
+    <dependencies>
+        <!--jGroups-->
+        <dependency>
+            <groupId>org.jgroups</groupId>
+            <artifactId>jgroups</artifactId>
+            <version>3.6.2.Final</version>
+        </dependency>
+
+        <!--Test-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+    </dependencies>
 </project>
