@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * TODO: 这里要写注释的!
+ * Hello Wold Controller
  */
 @Controller
 @RequestMapping("/")
